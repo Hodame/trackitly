@@ -37,10 +37,10 @@ onClickOutside(selectRef, () => toggleSelect(false));
 </script>
 
 <template>
-  <input class="invisible h-0" type="text" v-model="modelValue" />
+  <input class="invisible h-0 absolute" type="text" v-model="modelValue" />
 
   <div ref="selectRef" class="relative">
-    <p v-if="label" class="mb-1 text-sm font-medium ml-1">{{ label }}</p>
+    <p v-if="label" class="mb-1 ml-1 text-sm font-medium">{{ label }}</p>
 
     <div
       class="flex cursor-pointer items-center justify-between rounded-md bg-gray-200 p-2 pl-5"
@@ -56,19 +56,40 @@ onClickOutside(selectRef, () => toggleSelect(false));
       />
     </div>
 
-    <div
-      v-if="isSelectOpened"
-      class="absolute z-50 mt-1 w-full overflow-hidden rounded-md bg-gray-200"
-    >
-      <p
-        v-for="(option, idx) in options"
-        class="cursor-pointer p-2 pl-5 hover:bg-gray-300"
-        :class="{ 'font-bold': checkSelected(option) }"
-        :key="idx"
-        @click="select(option)"
+    <Transition>
+      <div
+        v-if="isSelectOpened"
+        class="absolute z-50 mt-1 w-full overflow-hidden rounded-md bg-gray-200"
       >
-        {{ defineTitle(option) }}
-      </p>
-    </div>
+        <p
+          v-for="(option, idx) in options"
+          class="cursor-pointer p-2 pl-5 hover:bg-gray-300"
+          :class="{ 'font-bold': checkSelected(option) }"
+          :key="idx"
+          @click="select(option)"
+        >
+          {{ defineTitle(option) }}
+        </p>
+      </div>
+    </Transition>
   </div>
 </template>
+
+<style scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: all 150ms ease-in-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.v-leave-from,
+.v-enter-to {
+  transform: translateY(0px);
+  opacity: 1;
+}
+</style>

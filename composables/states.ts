@@ -1,2 +1,3 @@
-export const useProject = () => useState('selectedProject', () => ({ id: 0, title: '' }));
-export const useSidebar = () => useState('isSidebarOpened', () => true)
+export const useProject = () =>
+  useState<{ id: number; title: string } | undefined>('selectedProject', () => undefined);
+export const useSidebar = () => useState('isSidebarOpened', () => true);

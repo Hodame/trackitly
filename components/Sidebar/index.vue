@@ -8,8 +8,8 @@ const options = ref([
 </script>
 
 <template>
-  <div class="relative h-screen bg-gray-100 p-5 shadow-xl">
-    <SidebarUser avatar="" name="Sergey Bondar" />
+  <div class="relative h-screen bg-gray-100 p-5">
+    <SidebarUser class="mb-2" avatar="" name="Sergey Bondar" />
     <BaseSelect v-if="isSidebar" v-model="selected" label="Project" :options="options" />
 
     <div class="mt-2 flex-auto">
@@ -28,7 +28,7 @@ const options = ref([
 
     <button
       @click="isSidebar = !isSidebar"
-      class="absolute right-0 top-5 flex h-8 w-8 translate-x-1/2 items-center justify-center rounded-full bg-blue-600 text-white"
+      class="absolute right-0 top-5 z-50 flex h-8 w-8 translate-x-1/2 items-center justify-center rounded-full bg-blue-600 text-white"
     >
       <Icon
         name="ph:arrow-right-bold"
