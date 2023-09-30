@@ -11,10 +11,12 @@ const navbarHeight = useElementSize(navbarRef).height;
   >
     <Sidebar />
     
-    <div>
-      <NavBar ref="navbarRef" class="fixed" />
-      <div class="my-5" :style="{ height: `${navbarHeight}px` }"></div>
-      <slot />
+    <div class="relative">
+      <NavBar ref="navbarRef" class="absolute py-2.5" />
+      <div class="my-2.5" :style="{ height: `${navbarHeight}px` }"></div>
+      <div class="px-7 pt-7 m-auto max-w-screen-2xl">
+        <slot />
+      </div>
     </div>
   </div>
 </template>

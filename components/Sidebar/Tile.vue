@@ -23,9 +23,9 @@ const { height } = useElementSize(nestedLinks);
 const { height: tileHeight } = useElementSize(tile);
 
 const nestedLinksStyle = computed<StyleValue>(() => {
-  if(!isSidebar.value) isNestedOpened.value = false
-  
-  if (!isNestedOpened.value ) {
+  if (!isSidebar.value) isNestedOpened.value = false;
+
+  if (!isNestedOpened.value) {
     return {
       height: `${tileHeight.value}px`
     };
@@ -44,6 +44,7 @@ const nestedLinksStyle = computed<StyleValue>(() => {
         class="group my-1 flex w-full items-center gap-1.5 rounded-2xl px-4 py-3 text-left hover:bg-blue-100 [&.router-link-active]:bg-blue-700"
         :to="to"
         :class="{ 'justify-center': !isSidebar }"
+        :title="!isSidebar ? text : ''"
       >
         <span v-if="icon" class="text-black group-[.router-link-active]:text-white">
           <Icon :name="icon" size="1.5rem" />
