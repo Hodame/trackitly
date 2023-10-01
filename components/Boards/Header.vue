@@ -5,12 +5,17 @@ type Props = {
   count?: number;
 };
 
+type Emits = {
+  addEvent: []
+}
+
+defineEmits<Emits>()
 defineProps<Props>();
 </script>
 
 <template>
   <div class="flex items-center justify-between rounded-md bg-gray-100 py-1 px-2">
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-2 text-gray-500">
       <Icon v-if="icon" :name="icon" size="1.25rem" />
       <h1 class="font-medium">
         {{ title }} <span v-if="count">({{ count }})</span>
@@ -18,7 +23,7 @@ defineProps<Props>();
     </div>
 
     <div class="flex gap-1">
-      <BaseIconButton icon="ph:plus"/>
+      <BaseIconButton @click="$emit('addEvent')" icon="ph:plus"/>
       <BaseIconButton icon="ph:dots-three"/>
     </div>
   </div>
