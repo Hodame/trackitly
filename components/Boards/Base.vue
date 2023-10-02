@@ -11,23 +11,27 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const selectedBoard = useSelectedBoard();
+const hoveringBoard = useSelectedBoard();
 const board = ref<HTMLDialogElement>();
 const { top } = useElementBounding(board);
 const { isOutside } = useMouseInElement(board);
 
 watch(isOutside, () => {
-  if (!isOutside) selectedBoard.value = props.id;
+  if (!isOutside.value) {
+    hoveringBoard.value = props.id;
+  }
 });
 </script>
 
 <template>
-  <div ref="board" class="relative flex flex-col gap-4">
+  <div ref="board" class="relative flex h-full flex-col gap-4 transition-all">
     <BoardsHeader :icon="icon" :title="title" />
     <BoardsCard
       v-for="(card, idx) in cards"
       :key="idx"
+      :card-object="card"
       :id="card.id"
+      :idx="card.idx"
       :board-top="top"
       :task="card.task"
       :title="card.title"

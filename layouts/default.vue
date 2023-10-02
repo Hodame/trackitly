@@ -11,10 +11,10 @@ const navbarHeight = useElementSize(navbarRef).height;
   >
     <Sidebar />
     
-    <div class="relative">
+    <div class="relative min-h-screen flex flex-col">
       <NavBar ref="navbarRef" class="absolute py-2.5" />
       <div class="my-2.5" :style="{ height: `${navbarHeight}px` }"></div>
-      <div class="px-7 pt-7 m-auto max-w-screen-2xl">
+      <div class="px-7 pt-7 m-auto max-w-screen-2xl w-full flex-auto">
         <slot />
       </div>
     </div>
