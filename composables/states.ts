@@ -1,33 +1,9 @@
-import { BoardCardProps } from '~/components/Boards/Card.vue';
 import { Boards } from '~/pages/boards.vue';
-
-export type BoardCard = {
-  id: number;
-  task: string;
-  title: string;
-  userName: string;
-  idx: number;
-  userAvatar?: string | null;
-};
-
-type Bounding = {
-  x?: number;
-  y?: number;
-  width: number;
-  height: number;
-};
 
 export const useProject = () =>
   useState<{ id: number; title: string } | undefined>('selectedProject', () => undefined);
 
 export const useSidebar = () => useState('isSidebarOpened', () => true);
-
-export const useDraggedElement = () =>
-  useState<BoardCard & Bounding | undefined>('draggedElementId', () => undefined);
-
-export const useSelectedCard = () => useState<BoardCardProps | undefined>('selectedCard', () => undefined)
-export const useSelectedBoard = () =>
-  useState<number | undefined>('selectedBoard', () => undefined);
 
 export const useBoards = () =>
   useState<Boards[]>('boards', () => {
@@ -66,6 +42,14 @@ export const useBoards = () =>
             idx: 0,
             task: 'featur #23',
             title: 'bebra bsfsdfsdfsebra',
+            userName: 'bebra'
+          },
+          {
+            id: 8,
+            boardId: 2,
+            idx: 0,
+            task: 'featurываы #23',
+            title: 'bebraываыва bsfsdfsdfsebra',
             userName: 'bebra'
           },
           {

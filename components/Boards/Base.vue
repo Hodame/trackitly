@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { useSelectedBoard } from '~/composables/states';
 import { BoardCardProps } from './Card.vue';
+import { Sortable } from 'sortablejs-vue3';
+import type { SortableOptions } from 'sortablejs';
+import type { AutoScrollOptions } from 'sortablejs/plugins';
+import { moveItemInArray } from '~/utils/moveItemInArray';
 
 type Props = {
   id: number;
@@ -9,34 +12,66 @@ type Props = {
   icon?: string;
 };
 
-const props = defineProps<Props>();
+const key = getCurrentInstance()?.vnode.key;
+const options: SortableOptions | AutoScrollOptions = {
+  animation: 200,
+  ghostClass: 'ghost',
+  group: 'tasks',
+  scroll: true,
+  forceFallback: true,
+  scrollSensitivity: 60,
+  scrollSpeed: 20,
+  bubbleScroll: true
+};
 
-const hoveringBoard = useSelectedBoard();
-const board = ref<HTMLDialogElement>();
-const { top } = useElementBounding(board);
-const { isOutside } = useMouseInElement(board);
+const boards = useBoards()
 
-watch(isOutside, () => {
-  if (!isOutside.value) {
-    hoveringBoard.value = props.id;
+function updateBoard(fromboardIdx: number, toBoardIdx: number, from: number, to: number) {
+  if (fromboardIdx == toBoardIdx) {
+    moveItemInArray(boards.value[toBoardIdx].cards, from, to);
+    return
   }
-});
+
+  const item = boards.value[fromboardIdx].cards.splice(from, 1)[0]
+  boards.value[toBoardIdx].cards.splice(to, 0, item)
+}
+
+defineProps<Props>();
 </script>
 
 <template>
   <div ref="board" class="relative flex h-full flex-col gap-4 transition-all">
     <BoardsHeader :icon="icon" :title="title" />
-    <BoardsCard
-      v-for="(card, idx) in cards"
-      :key="idx"
-      :card-object="card"
-      :id="card.id"
-      :idx="card.idx"
-      :board-top="top"
-      :task="card.task"
-      :title="card.title"
-      :user-name="card.userName"
-      :user-avatar="card.userAvatar"
-    />
+    <Sortable
+      item-key="id"
+      :data-board-idx="key"
+      :options="options"
+      :list="cards"
+      @end="
+        (c) =>
+          updateBoard(
+            Number(c.from.dataset.boardIdx) ?? 0,
+            Number(c.to.dataset.boardIdx) ?? 0,
+            c.oldIndex ?? 0,
+            c.newIndex ?? 0
+          )
+      "
+    >
+      <template #item="{ element }">
+        <BoardsCard
+          :id="element.id"
+          :task="element.task"
+          :title="element.title"
+          :user-name="element.userName"
+          :user-avatar="element.userAvatar"
+        />
+      </template>
+    </Sortable>
   </div>
 </template>
+
+<style scoped>
+.ghost {
+  @apply border border-blue-500 opacity-50;
+}
+</style>

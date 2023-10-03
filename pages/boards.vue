@@ -10,7 +10,8 @@ export type Boards = {
 };
 
 const boards = useBoards();
-const draggedCard = useDraggedElement();
+
+watch(boards, () => console.log(boards.value));
 </script>
 
 <template>
@@ -25,22 +26,10 @@ const draggedCard = useDraggedElement();
     </div>
 
     <div class="flex-auto">
-      <div v-if="draggedCard" class="absolute transition-all">
-        <BoardsCard
-          class="border border-blue-500 opacity-50"
-          :style="{ width: `${draggedCard.width}px`, height: `${draggedCard.height}px` }"
-          :id="draggedCard.id"
-          :idx="draggedCard.idx"
-          :task="draggedCard.task"
-          :title="draggedCard.title"
-          :user-name="draggedCard.userName"
-          :user-avatar="draggedCard.userAvatar"
-        />
-      </div>
-
-      <div class="mt-6 grid h-full grid-cols-4 gap-4">
+      <div class="mt-6 flex h-full gap-4 overflow-x-auto">
         <BoardsBase
           v-for="(board, idx) in boards"
+          class="flex-[0_0_300px] w-full"
           :key="idx"
           :id="board.id"
           :title="board.title"
