@@ -26,8 +26,8 @@ export const useBoards = () =>
             boardId: 1,
             idx: 1,
             task: 'bug #1211',
-            title: 'bug baaaarrraaaaaa',
-            userName: 'Sergey Bondar'
+            title: 'bug baaaarrraaaaaabug baaaarrraaaaaabug baaaarrraaaaaabug baaaarrraaaaaa',
+            userName: 'Sergey Bondar Bondar Bondar'
           }
         ]
       },

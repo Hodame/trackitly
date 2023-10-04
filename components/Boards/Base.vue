@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BoardCardProps } from './Card.vue';
 import { Sortable } from 'sortablejs-vue3';
-import type { SortableOptions } from 'sortablejs';
+import type { SortableEvent, SortableOptions } from 'sortablejs';
 import type { AutoScrollOptions } from 'sortablejs/plugins';
 import { moveItemInArray } from '~/utils/moveItemInArray';
 
@@ -16,24 +16,34 @@ const key = getCurrentInstance()?.vnode.key;
 const options: SortableOptions | AutoScrollOptions = {
   animation: 200,
   ghostClass: 'ghost',
-  group: 'tasks',
+  group: 'boards',
   scroll: true,
   forceFallback: true,
   scrollSensitivity: 60,
   scrollSpeed: 20,
+  fallbackOnBody: false,
   bubbleScroll: true
 };
 
-const boards = useBoards()
+const boards = useBoards();
 
-function updateBoard(fromboardIdx: number, toBoardIdx: number, from: number, to: number) {
-  if (fromboardIdx == toBoardIdx) {
+function updateBoard(event: SortableEvent) {
+  const fromBoardIdx = Number(event.from.dataset.boardIdx);
+  const toBoardIdx = Number(event.to.dataset.boardIdx);
+  const from = event.oldIndex;
+  const to = event.newIndex;
+
+  if (Number.isNaN(fromBoardIdx) || Number.isNaN(toBoardIdx)) return;
+  if (from === undefined || to === undefined) return;
+
+  if (fromBoardIdx == toBoardIdx) {
     moveItemInArray(boards.value[toBoardIdx].cards, from, to);
-    return
+    return;
   }
 
-  const item = boards.value[fromboardIdx].cards.splice(from, 1)[0]
-  boards.value[toBoardIdx].cards.splice(to, 0, item)
+  event.item.remove();
+  const item = boards.value[fromBoardIdx].cards.splice(from, 1)[0];
+  boards.value[toBoardIdx].cards.splice(to, 0, item);
 }
 
 defineProps<Props>();
@@ -47,15 +57,7 @@ defineProps<Props>();
       :data-board-idx="key"
       :options="options"
       :list="cards"
-      @end="
-        (c) =>
-          updateBoard(
-            Number(c.from.dataset.boardIdx) ?? 0,
-            Number(c.to.dataset.boardIdx) ?? 0,
-            c.oldIndex ?? 0,
-            c.newIndex ?? 0
-          )
-      "
+      @end="(e) => updateBoard(e)"
     >
       <template #item="{ element }">
         <BoardsCard

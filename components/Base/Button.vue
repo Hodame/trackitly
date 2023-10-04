@@ -20,11 +20,11 @@ const styles = computed(() => {
   return cva('rounded-md flex items-center gap-1 transition-all font-medium', {
     variants: {
       intent: {
-        primary: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-600',
+        primary: 'bg-blue-700 text-white hover:bg-blue-800 active:bg-blue-900',
         secondary: 'bg-gray-100 text-blue-600 hover:bg-gray-200 active:bg-gray-100'
       },
       size: {
-        default: 'py-2.5 px-3'
+        default: 'py-2 px-3'
       }
     },
     compoundVariants: [
