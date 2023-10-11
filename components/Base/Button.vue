@@ -21,7 +21,7 @@ const styles = computed(() => {
     variants: {
       intent: {
         primary: 'bg-blue-700 text-white hover:bg-blue-800 active:bg-blue-900',
-        secondary: 'bg-gray-100 text-blue-600 hover:bg-gray-200 active:bg-gray-100'
+        secondary: 'bg-gray-100 text-blue-600 hover:bg-gray-200 active:bg-gray-300'
       },
       size: {
         default: 'py-2 px-3'
@@ -39,8 +39,8 @@ const styles = computed(() => {
 
 <template>
   <button :class="[inline ? 'inline' : 'block w-full', styles]">
-    <Icon v-if="rightIcon" :name="rightIcon" size="1.25rem" />
-    <span>{{ text }}</span>
     <Icon v-if="leftIcon" :name="leftIcon" size="1.25rem"/>
+    <span>{{ text }}</span>
+    <Icon v-if="rightIcon" :name="rightIcon" size="1.25rem" />
   </button>
 </template>
